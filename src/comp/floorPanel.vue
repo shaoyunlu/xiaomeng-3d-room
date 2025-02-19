@@ -1,6 +1,7 @@
 <template>
     <div class="right-panel" v-show="panelShowRef">
-        123
+        <xmv-input></xmv-input>
+        <xmv-input></xmv-input>
     </div>
 </template>
 

@@ -33,7 +33,7 @@ export default defineComponent({
         onMounted(()=>{
             roomMode.el = document.getElementById("room_edit")
             roomMode.initScene()
-            //roomMode.createFloor()
+            roomMode.createFloor()
         })
 
         return {handleAddFloor}

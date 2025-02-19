@@ -79,7 +79,7 @@ class Room{
                 self.$emit('MeshClick',intersects[0].object.xmType)
                 //transformControls.attach(intersects[0].object);
             }else{
-                self.$emit('MeshClick','none')
+                //self.$emit('MeshClick','none')
                 //transformControls.detach();
             }
         })
