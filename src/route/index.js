@@ -6,8 +6,8 @@ import showVue from 'page/3D/show.vue'
 
 const routes = [
     { path : '/',component : showVue },
-    { path : '/2D/show',component : showVue },
-    { path : '/2D/edit',component : editVue }
+    { path : '/3D/show',component : showVue },
+    { path : '/3D/edit',component : editVue }
 ]
 
 const router= createRouter({
