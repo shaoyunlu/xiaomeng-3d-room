@@ -1,7 +1,5 @@
 <template>
-    <div class="room-edit" id="room_edit">
-
-    </div>
+    <div class="room-edit" id="room_edit"></div>
 </template>
 
 <script>
@@ -16,6 +14,7 @@ export default defineComponent({
         onMounted(()=>{
             roomMode.el = document.getElementById("room_edit")
             roomMode.initScene()
+            //roomMode.createFloor()
         })
 
         return {}
