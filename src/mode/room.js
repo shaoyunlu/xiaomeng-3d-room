@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import Floor from './floor'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
 
 class Room{
     constructor(){
@@ -10,6 +11,8 @@ class Room{
         this.renderer = null
         this.floor = null
         this.controls = null
+        this.$on = null
+        this.$emit = null
     }
 
     initScene(){
@@ -40,12 +43,46 @@ class Room{
         this.controls.dampingFactor = 0.05;
         this.controls.screenSpacePanning = true;
 
+        // 初始化 TransformControls
+        const transformControls = new TransformControls(self.camera, self.renderer.domElement);
+        self.scene.add(transformControls.getHelper());
+
+        transformControls.setTranslationSnap(0.5)
+        transformControls.setRotationSnap(THREE.MathUtils.degToRad(15))
+        transformControls.showX = true
+        transformControls.showY = false
+        transformControls.showZ = true
+
+        // 添加 TransformControls 的事件监听，避免与 OrbitControls 冲突
+        transformControls.addEventListener('dragging-changed', (event) => {
+            self.controls.enabled = !event.value
+        })
+
         // 调整窗口大小事件监听
         window.addEventListener('resize', () => {
-            self.camera.aspect = window.innerWidth / window.innerHeight;
-            self.camera.updateProjectionMatrix();
-            self.renderer.setSize(window.innerWidth, window.innerHeight);
-        });
+            self.camera.aspect = window.innerWidth / window.innerHeight
+            self.camera.updateProjectionMatrix()
+            self.renderer.setSize(window.innerWidth, window.innerHeight)
+        })
+
+        window.addEventListener('mousedown',(event)=>{
+            const raycaster = new THREE.Raycaster()
+            const mouse = new THREE.Vector2(
+                (event.clientX / window.innerWidth) * 2 - 1,
+                -(event.clientY / window.innerHeight) * 2 + 1
+            )
+            raycaster.setFromCamera(mouse, self.camera);
+            let meshList = self.scene.children.filter(tmp => tmp['xmType'] != undefined)
+
+            const intersects = raycaster.intersectObjects(meshList);
+            if (intersects.length > 0) {
+                self.$emit('MeshClick',intersects[0].object.xmType)
+                //transformControls.attach(intersects[0].object);
+            }else{
+                self.$emit('MeshClick','none')
+                //transformControls.detach();
+            }
+        })
 
         // 渲染循环
         function animate() {
