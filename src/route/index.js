@@ -1,10 +1,13 @@
 import {createRouter ,createWebHashHistory} from 'vue-router'
 
 
-import indexVue from 'page/index.vue'
+import editVue from 'page/3D/edit.vue'
+import showVue from 'page/3D/show.vue'
 
 const routes = [
-    { path : '/',component : indexVue },
+    { path : '/',component : showVue },
+    { path : '/2D/show',component : showVue },
+    { path : '/2D/edit',component : editVue }
 ]
 
 const router= createRouter({
