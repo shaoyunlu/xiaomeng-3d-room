@@ -13,6 +13,7 @@ class Room{
         this.controls = null
         this.$on = null
         this.$emit = null
+        this.currentMesh = null
     }
 
     initScene(){
@@ -29,7 +30,7 @@ class Room{
         )
 
         // 设置摄像机位置,朝向
-        this.camera.position.set(30, 45, 0); 
+        this.camera.position.set(0, 42, 33); 
         this.camera.lookAt(0, 0, 0);
 
         // 创建渲染器
@@ -76,9 +77,11 @@ class Room{
 
             const intersects = raycaster.intersectObjects(meshList);
             if (intersects.length > 0) {
-                self.$emit('MeshClick',intersects[0].object.xmType)
+                self.currentMesh = intersects[0].object
+                self.$emit('MeshClick',intersects[0].object)
                 //transformControls.attach(intersects[0].object);
             }else{
+                self.currentMesh = null
                 //self.$emit('MeshClick','none')
                 //transformControls.detach();
             }
@@ -89,13 +92,24 @@ class Room{
             requestAnimationFrame(animate);
             self.controls.update(); // 更新控制器
             self.renderer.render(self.scene, self.camera);
+            //console.log(self.camera)
+            //const direction = new THREE.Vector3();
+            //self.camera.getWorldDirection(direction);
+            //const distance = self.camera.position.distanceTo(self.controls.target);
+            //console.log(distance)
         }
         animate();
     }
 
-    createFloor(){
+    createFloor(width,height,repeatX,repeatY,texture){
+        if (this.floor){
+            this.scene.remove(this.floor.mesh);
+        }
         this.floor = new Floor()
-        this.floor.init(this.scene)
+        this.floor.init(this.scene,width,height,repeatX,repeatY)
+        if (texture){
+            this.floor.loadTexture(texture)
+        }
     }
 }
 
