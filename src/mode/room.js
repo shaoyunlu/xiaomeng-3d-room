@@ -9,8 +9,8 @@ class Room{
         this.scene = null
         this.camera = null
         this.renderer = null
-        this.floor = null
         this.controls = null
+        this.transformControls = null
         this.$on = null
         this.$emit = null
         this.currentMesh = null
@@ -38,6 +38,14 @@ class Room{
         this.renderer.setSize(window.innerWidth, window.innerHeight)
         this.el.appendChild(this.renderer.domElement)
 
+        // 创建一个 GridHelper
+        const size = 100; // 网格大小
+        const divisions = 50; // 分割次数
+        const gridHelper = new THREE.GridHelper(size, divisions);
+
+        // 将 GridHelper 添加到场景中
+        self.scene.add(gridHelper);
+
         // 添加轨道控制器 (OrbitControls) 启用阻尼效果（惯性） 允许平移
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
         this.controls.enableDamping = false
@@ -45,18 +53,19 @@ class Room{
         this.controls.screenSpacePanning = true;
 
         // 初始化 TransformControls
-        const transformControls = new TransformControls(self.camera, self.renderer.domElement);
-        self.scene.add(transformControls.getHelper());
+        this.transformControls = new TransformControls(self.camera, self.renderer.domElement);
+        self.scene.add(this.transformControls.getHelper());
 
-        transformControls.setTranslationSnap(0.5)
-        transformControls.setRotationSnap(THREE.MathUtils.degToRad(15))
-        transformControls.showX = true
-        transformControls.showY = false
-        transformControls.showZ = true
+        this.transformControls.setTranslationSnap(0.5)
+        this.transformControls.setRotationSnap(THREE.MathUtils.degToRad(15))
+        this.transformControls.showX = true
+        this.transformControls.showY = true
+        this.transformControls.showZ = true
 
         // 添加 TransformControls 的事件监听，避免与 OrbitControls 冲突
-        transformControls.addEventListener('dragging-changed', (event) => {
+        this.transformControls.addEventListener('dragging-changed', (event) => {
             self.controls.enabled = !event.value
+            console.log(event.value)
         })
 
         // 调整窗口大小事件监听
@@ -79,7 +88,7 @@ class Room{
             if (intersects.length > 0) {
                 self.currentMesh = intersects[0].object
                 self.$emit('MeshClick',intersects[0].object)
-                //transformControls.attach(intersects[0].object);
+                self.transformControls.attach(intersects[0].object);
             }else{
                 self.currentMesh = null
                 //self.$emit('MeshClick','none')
@@ -102,14 +111,12 @@ class Room{
     }
 
     createFloor(width,height,repeatX,repeatY,texture){
-        if (this.floor){
-            this.scene.remove(this.floor.mesh);
-        }
-        this.floor = new Floor()
-        this.floor.init(this.scene,width,height,repeatX,repeatY)
+        const floor = new Floor()
+        floor.init(this.scene,width,height,repeatX,repeatY)
         if (texture){
-            this.floor.loadTexture(texture)
+            floor.loadTexture(texture)
         }
+        return floor
     }
 }
 

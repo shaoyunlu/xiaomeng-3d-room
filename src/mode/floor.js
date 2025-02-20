@@ -1,9 +1,10 @@
 import * as THREE from 'three'
+import { setMeshPostion } from 'util/biz'
 
-const width = 50
-const height = 50
-const repeatX = 10
-const repeatY = 10
+const width = 20
+const height = 10
+const repeatX = 2
+const repeatY = 2
 
 class Floor{
     constructor(){
@@ -21,13 +22,6 @@ class Floor{
         this.repeatX = __repeatX
         this.repeatY = __repeatY
         const geometry = new THREE.PlaneGeometry(__width, __height)
-        const textureLoader = new THREE.TextureLoader()
-        const floorTexture = textureLoader.load('img/cizhuan.jpg')
-        // 横向重复  纵向重复 重复次数
-        floorTexture.wrapS = THREE.RepeatWrapping
-        floorTexture.wrapT = THREE.RepeatWrapping
-        floorTexture.repeat.set(this.repeatX, this.repeatY)
-        //const floorMaterial = new THREE.MeshBasicMaterial({ map: floorTexture });
         const floorMaterial = new THREE.MeshBasicMaterial({ color: 0xc5a70f});
         this.mesh = new THREE.Mesh(geometry, floorMaterial);
         this.mesh.xmType = 'floor'
@@ -56,6 +50,10 @@ class Floor{
               };
               reader.readAsDataURL(file);
         }
+    }
+
+    setPosition(positionStr){
+        setMeshPostion(this.mesh,positionStr)
     }
 }
 

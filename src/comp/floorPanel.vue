@@ -21,6 +21,7 @@
 
 <script>
 import {defineComponent, inject ,ref} from 'vue'
+import {removeMesh,getPositionByMesh} from 'util/biz'
 export default defineComponent({
     name:"",
     setup(props ,context) {
@@ -34,31 +35,37 @@ export default defineComponent({
         const fileListRef = ref([])
 
         let currentTt = new Object()
+        let currentFloor = null
 
         const handleUpdate = ()=>{
-            roomMode.createFloor(
+            roomMode.transformControls.detach()
+            let res = getPositionByMesh(currentFloor.mesh)
+            removeMesh(roomMode.scene,currentFloor.mesh)
+            currentFloor = roomMode.createFloor(
                                     widthRef.value ,
                                     heightRef.value,
                                     repeatXRef.value,
                                     repeatYRef.value,
                                     currentTt.obj
                                 )
+            currentFloor.setPosition(res)
         }
 
         const handleUploadDone = ()=>{
             currentTt = fileListRef.value[0]
-            roomMode.floor.loadTexture(fileListRef.value[0].obj,()=>{
+            currentFloor.loadTexture(fileListRef.value[0].obj,()=>{
                 fileListRef.value = []
             })
         }
 
         roomMode.$on('MeshClick' ,mesh=>{
+            currentFloor = mesh.xmObj
             panelShowRef.value = (mesh.xmType == 'floor')
             if (panelShowRef.value){
-                widthRef.value = roomMode.floor.width
-                heightRef.value = roomMode.floor.height
-                repeatXRef.value = roomMode.floor.repeatX
-                repeatYRef.value = roomMode.floor.repeatY
+                widthRef.value = currentFloor.width
+                heightRef.value = currentFloor.height
+                repeatXRef.value = currentFloor.repeatX
+                repeatYRef.value = currentFloor.repeatY
             }
         })
 
