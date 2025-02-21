@@ -2,10 +2,10 @@
     <div class="room-edit" id="room_edit"></div>
     <div class="room-edit-tools">
         <xmv-button @click="handleAddFloor">地板</xmv-button>
-        <xmv-button @click="handleSwitchTFC">切换</xmv-button>
         <xmv-button @click="handleSave">保存</xmv-button>
     </div>
     <floor-panel-comp></floor-panel-comp>
+    <tfc-helper-comp></tfc-helper-comp>
 </template>
 
 <script>
@@ -13,9 +13,10 @@ import {defineComponent, onMounted ,provide,reactive ,ref} from 'vue'
 import RoomMode from 'mode/room'
 import {createEventBus} from 'util/event'
 import floorPanelComp from 'comp/floorPanel.vue'
+import tfcHelperComp from 'comp/tfcHelper.vue'
 export default defineComponent({
     name:"",
-    components:{floorPanelComp},
+    components:{floorPanelComp,tfcHelperComp},
     setup(props ,context) {
 
         const roomMode = new RoomMode()
@@ -34,17 +35,6 @@ export default defineComponent({
             roomMode.createFloor()
         }
 
-        const handleSwitchTFC = ()=>{
-            if (TFCModeRef.value == 'translate'){
-                roomMode.transformControls.setMode("rotate");
-                TFCModeRef.value = 'rotate'
-            }else{
-                roomMode.transformControls.setMode("translate");
-                TFCModeRef.value = 'translate'
-            }
-            
-        }
-
         const handleSave = ()=>{
             let meshList = roomMode.scene.children.filter(tmp => tmp['xmType'] != undefined)
             console.log(meshList)
@@ -55,7 +45,7 @@ export default defineComponent({
             roomMode.initScene()
         })
 
-        return {handleAddFloor,handleSave,handleSwitchTFC}
+        return {handleAddFloor,handleSave}
     }
 })
 </script>

@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { setMeshPostion } from 'util/biz'
+import { setMeshPostion,setMeshRotation } from 'util/biz'
 
 const width = 20
 const height = 10
@@ -54,6 +54,10 @@ class Floor{
 
     setPosition(positionStr){
         setMeshPostion(this.mesh,positionStr)
+    }
+
+    setRotation(meshStr){
+        setMeshRotation(this.mesh,meshStr)
     }
 }
 

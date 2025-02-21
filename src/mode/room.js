@@ -14,6 +14,7 @@ class Room{
         this.$on = null
         this.$emit = null
         this.currentMesh = null
+        this.isDragging = false
     }
 
     initScene(){
@@ -59,13 +60,14 @@ class Room{
         this.transformControls.setTranslationSnap(0.5)
         this.transformControls.setRotationSnap(THREE.MathUtils.degToRad(15))
         this.transformControls.showX = true
-        this.transformControls.showY = true
+        this.transformControls.showY = false
         this.transformControls.showZ = true
 
         // 添加 TransformControls 的事件监听，避免与 OrbitControls 冲突
         this.transformControls.addEventListener('dragging-changed', (event) => {
+            self.isDragging = true
             self.controls.enabled = !event.value
-            console.log(event.value)
+            
         })
 
         // 调整窗口大小事件监听
@@ -76,6 +78,9 @@ class Room{
         })
 
         window.addEventListener('mousedown',(event)=>{
+            if (self.isDragging){
+                return false
+            }
             const raycaster = new THREE.Raycaster()
             const mouse = new THREE.Vector2(
                 (event.clientX / window.innerWidth) * 2 - 1,
@@ -92,8 +97,12 @@ class Room{
             }else{
                 self.currentMesh = null
                 //self.$emit('MeshClick','none')
-                //transformControls.detach();
+                self.transformControls.detach();
             }
+        })
+
+        window.addEventListener('mouseup',(event)=>{
+            self.isDragging = false
         })
 
         // 渲染循环

@@ -21,7 +21,7 @@
 
 <script>
 import {defineComponent, inject ,ref} from 'vue'
-import {removeMesh,getPositionByMesh} from 'util/biz'
+import {removeMesh,getPositionByMesh,getRotationByMesh} from 'util/biz'
 export default defineComponent({
     name:"",
     setup(props ,context) {
@@ -39,7 +39,8 @@ export default defineComponent({
 
         const handleUpdate = ()=>{
             roomMode.transformControls.detach()
-            let res = getPositionByMesh(currentFloor.mesh)
+            let pos = getPositionByMesh(currentFloor.mesh)
+            let rotation = getRotationByMesh(currentFloor.mesh)
             removeMesh(roomMode.scene,currentFloor.mesh)
             currentFloor = roomMode.createFloor(
                                     widthRef.value ,
@@ -48,7 +49,8 @@ export default defineComponent({
                                     repeatYRef.value,
                                     currentTt.obj
                                 )
-            currentFloor.setPosition(res)
+            currentFloor.setPosition(pos)
+            currentFloor.setRotation(rotation)
         }
 
         const handleUploadDone = ()=>{

@@ -25,22 +25,17 @@ export function setMeshPostion(mesh,positionStr){
                         parseFloat(positionArray[2]));
 }
 
-export function getRotation(mesh) {
+export function getRotationByMesh(mesh) {
     if (!mesh || !mesh.rotation) {
         console.warn("Invalid mesh object");
         return null;
     }
-    return { 
-        x: mesh.rotation.x, 
-        y: mesh.rotation.y, 
-        z: mesh.rotation.z 
-    };
+    return [mesh.rotation.x, mesh.rotation.y, mesh.rotation.z].join(",")
 }
 
-export function setRotation(mesh, rotation) {
-    if (!mesh || !mesh.rotation || typeof rotation !== "object") {
-        console.warn("Invalid parameters");
-        return;
-    }
-    mesh.rotation.set(rotation.x, rotation.y, rotation.z);
+export function setMeshRotation(mesh, rotationStr) {
+    let rotationArray = rotationStr.split(",")
+    mesh.rotation.set(parseFloat(rotationArray[0]),
+                        parseFloat(rotationArray[1]),
+                        parseFloat(rotationArray[2]));
 }
