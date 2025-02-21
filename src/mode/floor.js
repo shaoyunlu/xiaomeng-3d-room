@@ -12,6 +12,7 @@ class Floor{
         this.height = 0
         this.repeatX = 0
         this.repeatY = 0
+        this.mapRotation = 0
 
         this.mesh = null
     }
@@ -50,6 +51,23 @@ class Floor{
               };
               reader.readAsDataURL(file);
         }
+    }
+
+    setSize(width,height){
+        this.width = width
+        this.height = height
+        const newPlaneGeometry = new THREE.PlaneGeometry(width, height);
+        this.mesh.geometry.dispose();
+        this.mesh.geometry = newPlaneGeometry;
+    }
+
+    setMaterial(repeatX,repeatY,mapRotation){
+        this.repeatX = repeatX
+        this.repeatY = repeatY
+        this.mapRotation = mapRotation
+        this.mesh.material.map.repeat.set(repeatX, repeatY)
+        this.mesh.material.map.rotation = parseFloat(mapRotation) * (Math.PI / 180);
+        this.mesh.material.map.needsUpdate = true
     }
 
     setPosition(positionStr){

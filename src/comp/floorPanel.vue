@@ -8,6 +8,8 @@
         <xmv-input v-model="repeatXRef"></xmv-input>
         <span>RepeatY</span>
         <xmv-input v-model="repeatYRef"></xmv-input>
+        <span>纹理方向</span>
+        <xmv-input v-model="mapRotationRef"></xmv-input>
         <xmv-button @click="handleUpdate">确认修改</xmv-button>
         <xmv-upload :file-list="fileListRef" @uploadDone="handleUploadDone">
             <xmv-button type="primary">上传纹理</xmv-button>
@@ -32,6 +34,7 @@ export default defineComponent({
         const heightRef = ref(0)
         const repeatXRef = ref(0)
         const repeatYRef = ref(0)
+        const mapRotationRef = ref(0)
         const fileListRef = ref([])
 
         let currentTt = new Object()
@@ -39,18 +42,8 @@ export default defineComponent({
 
         const handleUpdate = ()=>{
             roomMode.transformControls.detach()
-            let pos = getPositionByMesh(currentFloor.mesh)
-            let rotation = getRotationByMesh(currentFloor.mesh)
-            removeMesh(roomMode.scene,currentFloor.mesh)
-            currentFloor = roomMode.createFloor(
-                                    widthRef.value ,
-                                    heightRef.value,
-                                    repeatXRef.value,
-                                    repeatYRef.value,
-                                    currentTt.obj
-                                )
-            currentFloor.setPosition(pos)
-            currentFloor.setRotation(rotation)
+            currentFloor.setSize(widthRef.value,heightRef.value)
+            currentFloor.setMaterial(repeatXRef.value,repeatYRef.value,mapRotationRef.value)
         }
 
         const handleUploadDone = ()=>{
@@ -68,11 +61,12 @@ export default defineComponent({
                 heightRef.value = currentFloor.height
                 repeatXRef.value = currentFloor.repeatX
                 repeatYRef.value = currentFloor.repeatY
+                mapRotationRef.value = currentFloor.mapRotation
             }
         })
 
         return {panelShowRef,widthRef,heightRef,fileListRef,
-                repeatXRef,repeatYRef,
+                repeatXRef,repeatYRef,mapRotationRef,
                 handleUpdate,handleUploadDone}
     }
 })
