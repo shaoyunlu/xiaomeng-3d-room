@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import Floor from './floor'
+import Wall from './wall'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
 
@@ -119,13 +120,16 @@ class Room{
         animate();
     }
 
-    createFloor(width,height,repeatX,repeatY,texture){
+    createFloor(){
         const floor = new Floor()
-        floor.init(this.scene,width,height,repeatX,repeatY)
-        if (texture){
-            floor.loadTexture(texture)
-        }
+        floor.init(this.scene)
         return floor
+    }
+
+    createWall(){
+        const wall = new Wall()
+        wall.init(this.scene)
+        return wall
     }
 }
 

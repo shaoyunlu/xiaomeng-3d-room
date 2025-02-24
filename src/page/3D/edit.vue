@@ -2,6 +2,7 @@
     <div class="room-edit" id="room_edit"></div>
     <div class="room-edit-tools">
         <xmv-button @click="handleAddFloor">地板</xmv-button>
+        <xmv-button @click="handleAddWall">墙体</xmv-button>
         <xmv-button @click="handleSave">保存</xmv-button>
     </div>
     <floor-panel-comp></floor-panel-comp>
@@ -35,6 +36,10 @@ export default defineComponent({
             roomMode.createFloor()
         }
 
+        const handleAddWall = ()=>{
+            roomMode.createWall()
+        }
+
         const handleSave = ()=>{
             let meshList = roomMode.scene.children.filter(tmp => tmp['xmType'] != undefined)
             console.log(meshList)
@@ -45,7 +50,7 @@ export default defineComponent({
             roomMode.initScene()
         })
 
-        return {handleAddFloor,handleSave}
+        return {handleAddFloor,handleSave,handleAddWall}
     }
 })
 </script>
