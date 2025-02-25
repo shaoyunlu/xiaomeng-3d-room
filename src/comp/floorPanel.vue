@@ -52,6 +52,7 @@ export default defineComponent({
         }
 
         watch(bgColorRef,val=>{
+            currentFloor.matColor = val
             setMatColor(currentFloor.mesh,val)
         })
 
@@ -62,6 +63,7 @@ export default defineComponent({
                 repeatXRef.value = currentFloor.repeatX
                 repeatYRef.value = currentFloor.repeatY
                 mapRotationRef.value = currentFloor.mapRotation
+                bgColorRef.value = currentFloor.matColor
             }
         })
 

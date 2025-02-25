@@ -1,6 +1,8 @@
 import * as THREE from 'three'
 import Floor from './floor'
 import Wall from './wall'
+import {getOrbitControlsStateAsJson,applyOrbitControlsStateFromJson} from 'util/biz'
+import {isEmpty} from 'util/data'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
 
@@ -131,6 +133,36 @@ class Room{
         const wall = new Wall()
         wall.init(this.scene)
         return wall
+    }
+
+    saveData(){
+        let childList = this.scene.children.filter(tmp => tmp['xmType'] != undefined)
+        let meshList = []
+        childList.forEach(mesh =>{
+            let meshJson = mesh.xmObj.serialization()
+            meshList.push(meshJson)
+        })
+        let cameraInfo = getOrbitControlsStateAsJson(this.controls)
+        localStorage.roomData = JSON.stringify({
+            camera : cameraInfo,
+            meshList : meshList
+        })
+    }
+
+    loadData(){
+        let roomJson = localStorage.roomData
+        let roomObj = JSON.parse(roomJson)
+        applyOrbitControlsStateFromJson(this.controls ,roomObj.camera)
+        console.log(roomObj)
+        if (!isEmpty(roomObj.meshList)){
+            roomObj.meshList.forEach(tmp =>{
+                if (tmp.type == 'floor'){
+                    const floor = new Floor()
+                    floor.init(this.scene)
+                    floor.deserialization(tmp)
+                }
+            })
+        }
     }
 }
 

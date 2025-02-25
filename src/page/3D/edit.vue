@@ -4,6 +4,7 @@
         <xmv-button @click="handleAddFloor">地板</xmv-button>
         <xmv-button @click="handleAddWall">墙体</xmv-button>
         <xmv-button @click="handleSave">保存</xmv-button>
+        <xmv-button @click="handleLoad">加载</xmv-button>
     </div>
     <floor-panel-comp></floor-panel-comp>
     <wall-panel-comp></wall-panel-comp>
@@ -42,9 +43,12 @@ export default defineComponent({
             roomMode.createWall()
         }
 
+        const handleLoad = ()=>{
+            roomMode.loadData()
+        }
+
         const handleSave = ()=>{
-            let meshList = roomMode.scene.children.filter(tmp => tmp['xmType'] != undefined)
-            console.log(meshList)
+            roomMode.saveData()
         }
 
         onMounted(()=>{
@@ -52,7 +56,7 @@ export default defineComponent({
             roomMode.initScene()
         })
 
-        return {handleAddFloor,handleSave,handleAddWall}
+        return {handleAddFloor,handleSave,handleLoad,handleAddWall}
     }
 })
 </script>

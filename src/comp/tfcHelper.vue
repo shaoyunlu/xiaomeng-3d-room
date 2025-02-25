@@ -29,6 +29,8 @@ export default defineComponent({
                 group.value = ['X','Z']
             }else if(val == 'rotate'){
                 group.value = ['Y']
+            }else{
+                group.value = ['X','Y','Z']
             }
             handleCheck()
         })

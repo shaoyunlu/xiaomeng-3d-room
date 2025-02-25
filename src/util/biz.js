@@ -43,13 +43,9 @@ export function setMeshRotation(mesh, rotationStr) {
 }
 
 export function getMeshBottomDistance(mesh, gridHelper) {
-    // 计算 mesh 的包围盒（bounding box）
     const box = new THREE.Box3().setFromObject(mesh);
-    // 获取 mesh 最低点的 Y 坐标
     const meshBottomY = box.min.y;
-    // GridHelper 的 Y 坐标（默认在 Y=0）
     const gridY = gridHelper.position.y;
-    // 计算距离
     return meshBottomY - gridY;
 }
 
@@ -58,26 +54,12 @@ export function getObjectTransformState(obj) {
       console.error("参数必须是 Three.js 的 Object3D 对象");
       return null;
     }
-  
-    // 返回深拷贝的变换数据
     return {
       position: obj.position.clone(),
       scale: obj.scale.clone(),
       rotation: obj.rotation.clone(),
       quaternion: obj.quaternion.clone()
     };
-}
-
-export function applyObjectTransformState(obj, state) {
-    if (!obj || !obj.isObject3D || !state) {
-      console.error("参数无效：obj 必须是 Object3D，state 必须是有效的变换状态");
-      return;
-    }
-  
-    // 应用变换状态 位置 缩放 四元数设置旋转
-    obj.position.copy(state.position);
-    obj.scale.copy(state.scale);
-    obj.quaternion.copy(state.quaternion);
 }
 
 export function setMatColor(mesh,rgbaString){
@@ -93,3 +75,43 @@ export function setMatColor(mesh,rgbaString){
     mesh.material.opacity = a;
     mesh.material.needsUpdate = true
 }
+
+export function getOrbitControlsStateAsJson(controls) {
+    // 获取状态对象
+    const state = {
+        cameraPosition: controls.object.position.toArray(),
+        cameraQuaternion: controls.object.quaternion.toArray(),
+        cameraZoom: controls.object.zoom,
+        target: controls.target.toArray()
+    };
+    return JSON.stringify(state);
+  }
+
+  export function applyOrbitControlsStateFromJson(controls, jsonString) {
+    // 将 JSON 字符串解析为状态对象
+    const state = JSON.parse(jsonString)
+    controls.object.position.fromArray(state.cameraPosition)
+    controls.object.quaternion.fromArray(state.cameraQuaternion)
+    controls.object.zoom = state.cameraZoom
+    controls.object.updateProjectionMatrix()
+    controls.target.fromArray(state.target)
+    controls.update()
+  }
+
+  export function getObjectTransform(obj) {
+    // 获取物体的偏移、旋转、缩放
+    const state = {
+      position: obj.position.toArray(),    // 偏移（位置）
+      quaternion: obj.quaternion.toArray(), // 旋转（四元数）
+      scale: obj.scale.toArray()           // 缩放
+    };
+  
+    return state
+  }
+
+  export function applyObjectTransformState(obj, state) {
+    // 还原物体的偏移、旋转、缩放
+    obj.position.fromArray(state.position);    // 设置偏移（位置）
+    obj.quaternion.fromArray(state.quaternion); // 设置旋转（四元数）
+    obj.scale.fromArray(state.scale);          // 设置缩放
+  }

@@ -1,5 +1,7 @@
 import * as THREE from 'three'
-import { setMeshPostion,setMeshRotation } from 'util/biz'
+import { setMeshPostion,setMeshRotation,
+        getObjectTransform,applyObjectTransformState,setMatColor } from 'util/biz'
+import { assignMatchingProperties } from 'util/data'
 
 class Floor{
     constructor(){
@@ -8,6 +10,8 @@ class Floor{
         this.repeatX = 2
         this.repeatY = 2
         this.mapRotation = 0
+        this.matColor = 'rgba(255, 255, 255, 1)'
+        this.type = 'floor'
 
         this.mesh = null
     }
@@ -16,7 +20,7 @@ class Floor{
         const geometry = new THREE.PlaneGeometry(this.width, this.height)
         const floorMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff});
         this.mesh = new THREE.Mesh(geometry, floorMaterial);
-        this.mesh.xmType = 'floor'
+        this.mesh.xmType = this.type
         // 使地板平铺
         this.mesh.rotation.x = -Math.PI / 2
         this.mesh.xmObj = this
@@ -61,7 +65,6 @@ class Floor{
             this.mesh.material.map.rotation = parseFloat(mapRotation) * (Math.PI / 180);
             this.mesh.material.map.needsUpdate = true
         }
-        
     }
 
     setPosition(positionStr){
@@ -70,6 +73,28 @@ class Floor{
 
     setRotation(meshStr){
         setMeshRotation(this.mesh,meshStr)
+    }
+
+    serialization(){
+        let transState = getObjectTransform(this.mesh)
+        let res = {
+            position : transState.position,
+            quaternion : transState.quaternion,
+            scale : transState.scale,
+            repeatX : this.repeatX,
+            repeatY : this.repeatY,
+            mapRotation : this.mapRotation,
+            matColor : this.matColor,
+            type : this.type
+        }
+        return res
+    }
+
+    deserialization(config){
+        assignMatchingProperties(config ,this)
+
+        setMatColor(this.mesh,config.matColor)
+        applyObjectTransformState(this.mesh,config)
     }
 }
 
