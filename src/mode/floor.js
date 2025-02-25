@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { setMeshPostion,setMeshRotation,
-        getObjectTransform,applyObjectTransformState,setMatColor } from 'util/biz'
+            getObjectTransform,applyObjectTransformState,setMatColor } from 'util/biz'
 import { assignMatchingProperties } from 'util/data'
 
 class Floor{
@@ -92,7 +92,6 @@ class Floor{
 
     deserialization(config){
         assignMatchingProperties(config ,this)
-
         setMatColor(this.mesh,config.matColor)
         applyObjectTransformState(this.mesh,config)
     }

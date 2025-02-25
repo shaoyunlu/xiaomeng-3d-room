@@ -160,6 +160,10 @@ class Room{
                     const floor = new Floor()
                     floor.init(this.scene)
                     floor.deserialization(tmp)
+                }else if (tmp.type == 'wall'){
+                    const wall = new Wall()
+                    wall.init(this.scene)
+                    wall.deserialization(tmp)
                 }
             })
         }

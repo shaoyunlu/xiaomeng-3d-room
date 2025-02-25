@@ -36,6 +36,7 @@ export default defineComponent({
         }
 
         watch(bgColorRef,val=>{
+            currentWall.matColor = val
             setMatColor(currentWall.mesh,val)
         })
 
@@ -43,6 +44,7 @@ export default defineComponent({
             panelShowRef.value = (mesh.xmType == 'wall')
             if (panelShowRef.value){
                 currentWall = mesh.xmObj
+                bgColorRef.value = currentWall.matColor
             }
         })
 
