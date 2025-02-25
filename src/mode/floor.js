@@ -14,7 +14,7 @@ class Floor{
 
     init(scene){
         const geometry = new THREE.PlaneGeometry(this.width, this.height)
-        const floorMaterial = new THREE.MeshBasicMaterial({ color: 0xc5a70f});
+        const floorMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff});
         this.mesh = new THREE.Mesh(geometry, floorMaterial);
         this.mesh.xmType = 'floor'
         // 使地板平铺
@@ -56,9 +56,12 @@ class Floor{
         this.repeatX = repeatX
         this.repeatY = repeatY
         this.mapRotation = mapRotation
-        this.mesh.material.map.repeat.set(repeatX, repeatY)
-        this.mesh.material.map.rotation = parseFloat(mapRotation) * (Math.PI / 180);
-        this.mesh.material.map.needsUpdate = true
+        if (this.mesh.material.map){
+            this.mesh.material.map.repeat.set(repeatX, repeatY)
+            this.mesh.material.map.rotation = parseFloat(mapRotation) * (Math.PI / 180);
+            this.mesh.material.map.needsUpdate = true
+        }
+        
     }
 
     setPosition(positionStr){

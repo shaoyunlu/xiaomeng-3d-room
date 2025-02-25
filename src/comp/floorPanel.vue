@@ -1,9 +1,9 @@
 <template>
     <div class="right-panel" v-show="panelShowRef">
-        <span>宽</span>
-        <xmv-input v-model="widthRef"></xmv-input>
-        <span>高</span>
-        <xmv-input v-model="heightRef"></xmv-input>
+        <span>地板颜色</span>
+        <br>
+        <xmv-color-picker v-model="bgColorRef" show-alpha/>
+        <br>
         <span>RepeatX</span>
         <xmv-input v-model="repeatXRef"></xmv-input>
         <span>RepeatY</span>
@@ -22,19 +22,18 @@
 </template>
 
 <script>
-import {defineComponent, inject ,ref} from 'vue'
-import {removeMesh,getPositionByMesh,getRotationByMesh} from 'util/biz'
+import {defineComponent, inject ,ref ,watch} from 'vue'
+import {setMatColor} from 'util/biz'
 export default defineComponent({
     name:"",
     setup(props ,context) {
 
         const roomMode = inject('roomMode')
         const panelShowRef = ref(false)
-        const widthRef = ref(0)
-        const heightRef = ref(0)
         const repeatXRef = ref(0)
         const repeatYRef = ref(0)
         const mapRotationRef = ref(0)
+        const bgColorRef = ref('rgba(255, 255, 255, 1)')
         const fileListRef = ref([])
 
         let currentTt = new Object()
@@ -42,7 +41,6 @@ export default defineComponent({
 
         const handleUpdate = ()=>{
             roomMode.transformControls.detach()
-            currentFloor.setSize(widthRef.value,heightRef.value)
             currentFloor.setMaterial(repeatXRef.value,repeatYRef.value,mapRotationRef.value)
         }
 
@@ -53,20 +51,23 @@ export default defineComponent({
             })
         }
 
+        watch(bgColorRef,val=>{
+            setMatColor(currentFloor.mesh,val)
+        })
+
         roomMode.$on('MeshClick' ,mesh=>{
             currentFloor = mesh.xmObj
             panelShowRef.value = (mesh.xmType == 'floor')
             if (panelShowRef.value){
-                widthRef.value = currentFloor.width
-                heightRef.value = currentFloor.height
                 repeatXRef.value = currentFloor.repeatX
                 repeatYRef.value = currentFloor.repeatY
                 mapRotationRef.value = currentFloor.mapRotation
             }
         })
 
-        return {panelShowRef,widthRef,heightRef,fileListRef,
+        return {panelShowRef,fileListRef,
                 repeatXRef,repeatYRef,mapRotationRef,
+                bgColorRef,
                 handleUpdate,handleUploadDone}
     }
 })

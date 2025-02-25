@@ -16,6 +16,7 @@ class Room{
         this.$emit = null
         this.currentMesh = null
         this.isDragging = false
+        this.gridHelper = null
     }
 
     initScene(){
@@ -43,10 +44,10 @@ class Room{
         // 创建一个 GridHelper
         const size = 100; // 网格大小
         const divisions = 50; // 分割次数
-        const gridHelper = new THREE.GridHelper(size, divisions);
+        this.gridHelper = new THREE.GridHelper(size, divisions);
 
         // 将 GridHelper 添加到场景中
-        self.scene.add(gridHelper);
+        self.scene.add(this.gridHelper);
 
         // 添加轨道控制器 (OrbitControls) 启用阻尼效果（惯性） 允许平移
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);

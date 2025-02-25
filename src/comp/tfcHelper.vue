@@ -3,6 +3,7 @@
         <xmv-radio-group v-model="radio">
             <xmv-radio label="translate">translate</xmv-radio>
             <xmv-radio label="rotate">rotate</xmv-radio>
+            <xmv-radio label="scale">scale</xmv-radio>
         </xmv-radio-group>
         <xmv-checkbox-group v-model="group">
             <xmv-checkbox label="X" @check="handleCheck">X轴</xmv-checkbox>
@@ -26,7 +27,7 @@ export default defineComponent({
             roomMode.transformControls.setMode(val);
             if (val == 'translate'){
                 group.value = ['X','Z']
-            }else{
+            }else if(val == 'rotate'){
                 group.value = ['Y']
             }
             handleCheck()

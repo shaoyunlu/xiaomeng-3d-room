@@ -6,6 +6,7 @@
         <xmv-button @click="handleSave">保存</xmv-button>
     </div>
     <floor-panel-comp></floor-panel-comp>
+    <wall-panel-comp></wall-panel-comp>
     <tfc-helper-comp></tfc-helper-comp>
 </template>
 
@@ -14,10 +15,11 @@ import {defineComponent, onMounted ,provide,reactive ,ref} from 'vue'
 import RoomMode from 'mode/room'
 import {createEventBus} from 'util/event'
 import floorPanelComp from 'comp/floorPanel.vue'
+import wallPanelComp from 'comp/wallPanel.vue'
 import tfcHelperComp from 'comp/tfcHelper.vue'
 export default defineComponent({
     name:"",
-    components:{floorPanelComp,tfcHelperComp},
+    components:{floorPanelComp,wallPanelComp,tfcHelperComp},
     setup(props ,context) {
 
         const roomMode = new RoomMode()
