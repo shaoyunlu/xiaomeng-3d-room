@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import Floor from './floor'
 import Wall from './wall'
+import Cabinet from './cabinet'
 import {getOrbitControlsStateAsJson,applyOrbitControlsStateFromJson} from 'util/biz'
 import {isEmpty} from 'util/data'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
@@ -95,9 +96,10 @@ class Room{
 
             const intersects = raycaster.intersectObjects(meshList);
             if (intersects.length > 0) {
-                self.currentMesh = intersects[0].object
-                self.$emit('MeshClick',intersects[0].object)
-                self.transformControls.attach(intersects[0].object);
+                let obj = intersects[0].object
+                self.currentMesh = obj
+                self.$emit('MeshClick',obj)
+                self.transformControls.attach(obj);
             }else{
                 self.currentMesh = null
                 //self.$emit('MeshClick','none')
@@ -114,11 +116,6 @@ class Room{
             requestAnimationFrame(animate);
             self.controls.update(); // 更新控制器
             self.renderer.render(self.scene, self.camera);
-            //console.log(self.camera)
-            //const direction = new THREE.Vector3();
-            //self.camera.getWorldDirection(direction);
-            //const distance = self.camera.position.distanceTo(self.controls.target);
-            //console.log(distance)
         }
         animate();
     }
@@ -133,6 +130,12 @@ class Room{
         const wall = new Wall()
         wall.init(this.scene)
         return wall
+    }
+
+    createCabinet(){
+        const cabinet = new Cabinet()
+        cabinet.init(this.scene)
+        return cabinet
     }
 
     saveData(){

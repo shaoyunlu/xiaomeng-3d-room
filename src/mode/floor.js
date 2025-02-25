@@ -67,14 +67,6 @@ class Floor{
         }
     }
 
-    setPosition(positionStr){
-        setMeshPostion(this.mesh,positionStr)
-    }
-
-    setRotation(meshStr){
-        setMeshRotation(this.mesh,meshStr)
-    }
-
     serialization(){
         let transState = getObjectTransform(this.mesh)
         let res = {

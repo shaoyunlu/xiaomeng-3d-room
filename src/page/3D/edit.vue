@@ -3,6 +3,7 @@
     <div class="room-edit-tools">
         <xmv-button @click="handleAddFloor">地板</xmv-button>
         <xmv-button @click="handleAddWall">墙体</xmv-button>
+        <xmv-button @click="handleAddCabinet">机柜</xmv-button>
         <xmv-button @click="handleSave">保存</xmv-button>
         <xmv-button @click="handleLoad">加载</xmv-button>
     </div>
@@ -43,6 +44,10 @@ export default defineComponent({
             roomMode.createWall()
         }
 
+        const handleAddCabinet = ()=>{
+            roomMode.createCabinet()
+        }
+
         const handleLoad = ()=>{
             roomMode.loadData()
         }
@@ -56,7 +61,7 @@ export default defineComponent({
             roomMode.initScene()
         })
 
-        return {handleAddFloor,handleSave,handleLoad,handleAddWall}
+        return {handleAddFloor,handleSave,handleLoad,handleAddWall,handleAddCabinet}
     }
 })
 </script>
