@@ -97,6 +97,9 @@ class Room{
             const intersects = raycaster.intersectObjects(meshList);
             if (intersects.length > 0) {
                 let obj = intersects[0].object
+                if (obj.parent.xmType != undefined){
+                    obj = obj.parent
+                }
                 self.currentMesh = obj
                 self.$emit('MeshClick',obj)
                 self.transformControls.attach(obj);
@@ -138,6 +141,17 @@ class Room{
         return cabinet
     }
 
+    resetScene(){
+        for (let i = this.scene.children.length - 1; i >= 0; i--) {
+            const child = this.scene.children[i];
+          
+            // 如果对象的 type 不是 GridHelper 或 Object3D，则移除它
+            if (child.type !== 'GridHelper' && child.type !== 'Object3D') {
+              this.scene.remove(child);
+            }
+        }
+    }
+
     saveData(){
         let childList = this.scene.children.filter(tmp => tmp['xmType'] != undefined)
         let meshList = []
@@ -153,6 +167,7 @@ class Room{
     }
 
     loadData(){
+        this.resetScene()
         let roomJson = localStorage.roomData
         let roomObj = JSON.parse(roomJson)
         applyOrbitControlsStateFromJson(this.controls ,roomObj.camera)
@@ -167,6 +182,10 @@ class Room{
                     const wall = new Wall()
                     wall.init(this.scene)
                     wall.deserialization(tmp)
+                }else if (tmp.type == 'cabinet'){
+                    const cabinet = new Cabinet()
+                    cabinet.init(this.scene)
+                    cabinet.deserialization(tmp)
                 }
             })
         }

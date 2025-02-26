@@ -1,12 +1,11 @@
 import * as THREE from 'three'
-import { setMeshPostion,setMeshRotation,
-            getObjectTransform,applyObjectTransformState,setMatColor } from 'util/biz'
+import { getObjectTransform,applyObjectTransformState,setMatColor } from 'util/biz'
 import { assignMatchingProperties } from 'util/data'
 
 class Floor{
     constructor(){
-        this.width = 20
-        this.height = 10
+        this.width = 50
+        this.height = 50
         this.repeatX = 2
         this.repeatY = 2
         this.mapRotation = 0

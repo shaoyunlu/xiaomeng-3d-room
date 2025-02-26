@@ -9,6 +9,7 @@
     </div>
     <floor-panel-comp></floor-panel-comp>
     <wall-panel-comp></wall-panel-comp>
+    <cabinet-panel-comp></cabinet-panel-comp>
     <tfc-helper-comp></tfc-helper-comp>
 </template>
 
@@ -18,10 +19,11 @@ import RoomMode from 'mode/room'
 import {createEventBus} from 'util/event'
 import floorPanelComp from 'comp/floorPanel.vue'
 import wallPanelComp from 'comp/wallPanel.vue'
+import cabinetPanelComp from 'comp/cabinetPanel.vue'
 import tfcHelperComp from 'comp/tfcHelper.vue'
 export default defineComponent({
     name:"",
-    components:{floorPanelComp,wallPanelComp,tfcHelperComp},
+    components:{floorPanelComp,wallPanelComp,tfcHelperComp,cabinetPanelComp},
     setup(props ,context) {
 
         const roomMode = new RoomMode()
@@ -59,6 +61,7 @@ export default defineComponent({
         onMounted(()=>{
             roomMode.el = document.getElementById("room_edit")
             roomMode.initScene()
+            roomMode.loadData()
         })
 
         return {handleAddFloor,handleSave,handleLoad,handleAddWall,handleAddCabinet}

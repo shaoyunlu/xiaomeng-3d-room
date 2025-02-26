@@ -21,8 +21,6 @@ export default defineConfig({
   ],
   server: {
     // 配置服务器
-    hmr: {
-      overlay: false
-    }
+    hmr: false
   }
 })
