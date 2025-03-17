@@ -23,11 +23,9 @@ class Cabinet{
     }
 
     init(scene){
-        const otherSideMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
+        const leftRightSideMaterial = new THREE.MeshBasicMaterial({ color: 0x1C3F95 });
+        const topBottomSideMaterial = new THREE.MeshBasicMaterial({ color: 0x1C3F95 });
         const frontSideMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-
-        const pinkSideMaterial = new THREE.MeshBasicMaterial({ color: 0xe26e62 });
-        const yellowSideMaterial = new THREE.MeshBasicMaterial({ color: 0xceda1c });
 
         this.group = new THREE.Group();
         this.group.xmType = this.type
@@ -39,32 +37,32 @@ class Cabinet{
         //this.group.add(frontPanel);
 
         // **背板（黑色）**
-        const backPanel = new THREE.Mesh(new THREE.BoxGeometry(
-                this.width, this.height, this.thickness), pinkSideMaterial);
-        backPanel.position.set(0, 0, -this.depth / 2 + this.thickness/2); // 放置在后面
-        this.group.add(backPanel);
+        // const backPanel = new THREE.Mesh(new THREE.BoxGeometry(
+        //         this.width, this.height, this.thickness), leftRightSideMaterial);
+        // backPanel.position.set(0, 0, -this.depth / 2 + this.thickness/2);
+        //this.group.add(backPanel);
 
         // **左侧板**
         const leftPanel = new THREE.Mesh(new THREE.BoxGeometry(
-                this.thickness, this.height, this.depth), yellowSideMaterial);
+                this.thickness, this.height, this.depth), leftRightSideMaterial);
         leftPanel.position.set(-this.width / 2 - this.thickness / 2, 0, 0);
         this.group.add(leftPanel);
 
         // **右侧板**
         const rightPanel = new THREE.Mesh(new THREE.BoxGeometry(
-                this.thickness, this.height, this.depth), yellowSideMaterial);
+                this.thickness, this.height, this.depth), leftRightSideMaterial);
         rightPanel.position.set(this.width / 2 + this.thickness / 2, 0, 0);
         this.group.add(rightPanel);
 
         // **顶部板**
         const topPanel = new THREE.Mesh(new THREE.BoxGeometry(
-                this.width + this.thickness * 2, this.thickness, this.depth), otherSideMaterial);
+                this.width + this.thickness * 2, this.thickness, this.depth), topBottomSideMaterial);
         topPanel.position.set(0, this.height / 2 + this.thickness / 2, 0);
         this.group.add(topPanel);
 
         // **底部板**
         const bottomPanel = new THREE.Mesh(new THREE.BoxGeometry(
-                this.width + this.thickness * 2, this.thickness, this.depth), otherSideMaterial);
+                this.width + this.thickness * 2, this.thickness, this.depth), topBottomSideMaterial);
         bottomPanel.position.set(0, -this.height / 2 - this.thickness / 2, 0);
         this.group.add(bottomPanel);
 

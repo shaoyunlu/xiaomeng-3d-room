@@ -1,3 +1,4 @@
+import {ref} from 'vue'
 import * as THREE from 'three'
 import Floor from './floor'
 import Wall from './wall'
@@ -20,6 +21,8 @@ class Room{
         this.currentMesh = null
         this.isDragging = false
         this.gridHelper = null
+
+        this.cabinetFormCompVisibleRef = ref(false)
     }
 
     initScene(){
@@ -48,6 +51,8 @@ class Room{
         const size = 100; // 网格大小
         const divisions = 50; // 分割次数
         this.gridHelper = new THREE.GridHelper(size, divisions);
+        this.gridHelper.material.opacity = 0.1; // 设置透明度
+        this.gridHelper.material.transparent = true; // 启用透明效果
 
         // 将 GridHelper 添加到场景中
         self.scene.add(this.gridHelper);
@@ -169,6 +174,9 @@ class Room{
     loadData(){
         this.resetScene()
         let roomJson = localStorage.roomData
+        if (!roomJson){
+            return false
+        }
         let roomObj = JSON.parse(roomJson)
         applyOrbitControlsStateFromJson(this.controls ,roomObj.camera)
         console.log(roomObj)

@@ -11,6 +11,7 @@
     <wall-panel-comp></wall-panel-comp>
     <cabinet-panel-comp></cabinet-panel-comp>
     <tfc-helper-comp></tfc-helper-comp>
+    <cabinet-form-comp v-if="cabinetFormCompVisibleRef"></cabinet-form-comp>
 </template>
 
 <script>
@@ -21,9 +22,10 @@ import floorPanelComp from 'comp/floorPanel.vue'
 import wallPanelComp from 'comp/wallPanel.vue'
 import cabinetPanelComp from 'comp/cabinetPanel.vue'
 import tfcHelperComp from 'comp/tfcHelper.vue'
+import cabinetFormComp from 'comp/cabinetForm.vue'
 export default defineComponent({
     name:"",
-    components:{floorPanelComp,wallPanelComp,tfcHelperComp,cabinetPanelComp},
+    components:{floorPanelComp,wallPanelComp,tfcHelperComp,cabinetPanelComp,cabinetFormComp},
     setup(props ,context) {
 
         const roomMode = new RoomMode()
@@ -33,8 +35,7 @@ export default defineComponent({
         const {$on ,$emit} = createEventBus(eventBus)
         roomMode.$on = $on
         roomMode.$emit = $emit
-
-        const TFCModeRef = ref('translate')
+        const cabinetFormCompVisibleRef = ref(false)
 
         provide('roomMode' ,roomMode)
 
@@ -47,7 +48,8 @@ export default defineComponent({
         }
 
         const handleAddCabinet = ()=>{
-            roomMode.createCabinet()
+            roomMode.cabinetFormCompVisibleRef.value = true
+            //roomMode.createCabinet()
         }
 
         const handleLoad = ()=>{
@@ -60,11 +62,12 @@ export default defineComponent({
 
         onMounted(()=>{
             roomMode.el = document.getElementById("room_edit")
+            roomMode.cabinetFormCompVisibleRef = cabinetFormCompVisibleRef
             roomMode.initScene()
             roomMode.loadData()
         })
 
-        return {handleAddFloor,handleSave,handleLoad,handleAddWall,handleAddCabinet}
+        return {cabinetFormCompVisibleRef,handleAddFloor,handleSave,handleLoad,handleAddWall,handleAddCabinet}
     }
 })
 </script>

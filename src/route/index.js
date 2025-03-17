@@ -5,7 +5,7 @@ import editVue from 'page/3D/edit.vue'
 import showVue from 'page/3D/show.vue'
 
 const routes = [
-    { path : '/',component : showVue },
+    { path : '/',component : editVue },
     { path : '/3D/show',component : showVue },
     { path : '/3D/edit',component : editVue }
 ]
