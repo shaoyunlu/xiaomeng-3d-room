@@ -4,8 +4,8 @@
             <xmv-form-item label="名称" prop="cabinetName">
                 <xmv-input v-model="formMode.cabinetName"></xmv-input>
             </xmv-form-item>
-            <xmv-form-item label="U位高度" prop="uCount">
-                <xmv-input v-model="formMode.uCount"></xmv-input>
+            <xmv-form-item label="U位高度" prop="uNum">
+                <xmv-input v-model="formMode.uNum"></xmv-input>
             </xmv-form-item>
         </xmv-form>
         <template #footer>
@@ -26,21 +26,28 @@ export default defineComponent({
     setup(props ,context) {
         const roomMode = inject('roomMode')
         const dialogModeFormVisible = ref(true)
+        const dialogFormRef = ref(null)
         const formMode = reactive({
             cabinetName : '',
-            uCount : 0
+            uNum : 0
         })
         const rules = reactive({
             cabinetName : [{required : true}],
-            uCount : [{required : true ,number:true}]
+            uNum : [{required : true ,number:true}]
         })
         const handleClose = ()=>{
             roomMode.cabinetFormCompVisibleRef.value = false
         }
         const handleEnterDialogModeForm = ()=>{
-
+            dialogFormRef.value.validate().then(()=>{
+                roomMode.createCabinet(formMode)
+                roomMode.cabinetFormCompVisibleRef.value = false
+            }).catch(msg =>{ 
+                console.log(msg)
+            })
         }
-        return {dialogModeFormVisible,formMode,rules,handleEnterDialogModeForm,handleClose}
+        return {dialogModeFormVisible,formMode,rules,dialogFormRef,
+                handleEnterDialogModeForm,handleClose}
     }
 })
 </script>

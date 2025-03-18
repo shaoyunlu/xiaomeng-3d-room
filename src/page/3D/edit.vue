@@ -49,7 +49,6 @@ export default defineComponent({
 
         const handleAddCabinet = ()=>{
             roomMode.cabinetFormCompVisibleRef.value = true
-            //roomMode.createCabinet()
         }
 
         const handleLoad = ()=>{

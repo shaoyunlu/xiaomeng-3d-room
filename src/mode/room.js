@@ -140,8 +140,8 @@ class Room{
         return wall
     }
 
-    createCabinet(){
-        const cabinet = new Cabinet()
+    createCabinet(mode){
+        const cabinet = new Cabinet(mode.uNum)
         cabinet.init(this.scene)
         return cabinet
     }

@@ -9,14 +9,15 @@ class Cabinet{
     constructor(uNum = default_num){
         this.type = 'cabinet'
         this.width = 3
-        this.height = 8.4
         this.depth = 3
         this.thickness = 0.2
-
         this.uNum = uNum
 
+        this.sigleUHeight = 0.2
+        this.height = this.sigleUHeight * this.uNum + this.thickness * 2
+
         this.sigleUWidth = this.width
-        this.sigleUHeight = ((this.height - this.thickness * 2)/this.uNum).toFixed(2)
+        //this.sigleUHeight = ((this.height - this.thickness * 2)/this.uNum).toFixed(2)
         this.sigleUDepth = this.depth
 
         this.group
