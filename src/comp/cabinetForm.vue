@@ -29,7 +29,7 @@ export default defineComponent({
         const dialogFormRef = ref(null)
         const formMode = reactive({
             cabinetName : '',
-            uNum : 0
+            uNum : ''
         })
         const rules = reactive({
             cabinetName : [{required : true}],
@@ -40,7 +40,8 @@ export default defineComponent({
         }
         const handleEnterDialogModeForm = ()=>{
             dialogFormRef.value.validate().then(()=>{
-                roomMode.createCabinet(formMode)
+                let cabinetMode = roomMode.createCabinet(formMode)
+                roomMode.stick(cabinetMode.group)
                 roomMode.cabinetFormCompVisibleRef.value = false
             }).catch(msg =>{ 
                 console.log(msg)

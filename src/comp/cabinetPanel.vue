@@ -1,7 +1,6 @@
 <template>
     <div class="right-panel" v-show="panelShowRef">
         <div>
-            <xmv-button @click="handleStick">贴地</xmv-button>
             <xmv-button @click="handleAddAsset">设置资产(测试)</xmv-button>
         </div>
     </div>
@@ -19,11 +18,6 @@ export default defineComponent({
 
         var currentCabinet = null
 
-        const handleStick = ()=>{
-            let distance = getMeshBottomDistance(currentCabinet.group,roomMode.gridHelper)
-            currentCabinet.group.position.y -= distance;
-        }
-
         const handleAddAsset = ()=>{
             currentCabinet.addAsset(1 ,3)
         }
@@ -39,7 +33,7 @@ export default defineComponent({
             }
         })
 
-        return {panelShowRef,handleStick,handleAddAsset}
+        return {panelShowRef,handleAddAsset}
     }
 })
 </script>

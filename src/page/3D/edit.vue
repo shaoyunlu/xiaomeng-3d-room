@@ -44,7 +44,8 @@ export default defineComponent({
         }
 
         const handleAddWall = ()=>{
-            roomMode.createWall()
+            let wallMode = roomMode.createWall()
+            roomMode.stick(wallMode.mesh)
         }
 
         const handleAddCabinet = ()=>{

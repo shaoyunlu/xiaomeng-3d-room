@@ -3,7 +3,7 @@ import * as THREE from 'three'
 import Floor from './floor'
 import Wall from './wall'
 import Cabinet from './cabinet'
-import {getOrbitControlsStateAsJson,applyOrbitControlsStateFromJson} from 'util/biz'
+import {getOrbitControlsStateAsJson,applyOrbitControlsStateFromJson,getMeshBottomDistance} from 'util/biz'
 import {isEmpty} from 'util/data'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
@@ -126,6 +126,11 @@ class Room{
             self.renderer.render(self.scene, self.camera);
         }
         animate();
+    }
+
+    stick(mesh){
+        let distance = getMeshBottomDistance(mesh,this.gridHelper)
+        mesh.position.y -= distance;
     }
 
     createFloor(){
