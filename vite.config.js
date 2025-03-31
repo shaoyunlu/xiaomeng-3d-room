@@ -10,7 +10,8 @@ export default defineConfig({
       'page': resolve(__dirname, 'src/page'),
       'mode': resolve(__dirname, 'src/mode'),
       'comp': resolve(__dirname, 'src/comp'),
-      'util': resolve(__dirname, 'src/util')
+      'util': resolve(__dirname, 'src/util'),
+      'api': resolve(__dirname, 'src/api')
     }
   },
   plugins: [

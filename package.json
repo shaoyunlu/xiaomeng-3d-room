@@ -4,7 +4,7 @@
   "description": "",
   "main": "vite.config.js",
   "scripts": {
-    "dev": "vite --port 3000 --host 0.0.0.0",
+    "dev": "vite --port 3100 --host 0.0.0.0",
     "build": "vite build",
     "preview": "vite build & vite preview --port 3100"
   },
@@ -12,7 +12,8 @@
     "three": "^0.173.0",
     "vue": "^3.2.47",
     "vue-router": "^4.2.2",
-    "xiaomeng-ui": "^0.1.58"
+    "xiaomeng-ui": "^0.1.58",
+    "axios": "^1.6.7"
   },
   "devDependencies": {
     "@vitejs/plugin-legacy": "^4.0.2",

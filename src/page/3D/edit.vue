@@ -23,6 +23,7 @@ import wallPanelComp from 'comp/wallPanel.vue'
 import cabinetPanelComp from 'comp/cabinetPanel.vue'
 import tfcHelperComp from 'comp/tfcHelper.vue'
 import cabinetFormComp from 'comp/cabinetForm.vue'
+import {getRoomDetail} from 'api/index'
 export default defineComponent({
     name:"",
     components:{floorPanelComp,wallPanelComp,tfcHelperComp,cabinetPanelComp,cabinetFormComp},
@@ -60,7 +61,8 @@ export default defineComponent({
             roomMode.saveData()
         }
 
-        onMounted(()=>{
+        onMounted(async ()=>{
+            let res = await getRoomDetail()
             roomMode.el = document.getElementById("room_edit")
             roomMode.cabinetFormCompVisibleRef = cabinetFormCompVisibleRef
             roomMode.initScene()

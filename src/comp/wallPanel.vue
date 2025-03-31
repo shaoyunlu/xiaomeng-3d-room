@@ -5,7 +5,6 @@
         <xmv-color-picker v-model="bgColorRef" show-alpha/>
         <br>
         <div>
-            <xmv-button @click="handleStick">贴地</xmv-button>
             <xmv-button @click="handleUpdate">确认修改</xmv-button>
         </div>
     </div>
@@ -30,11 +29,6 @@ export default defineComponent({
             
         }
 
-        const handleStick = ()=>{
-            let distance = getMeshBottomDistance(currentWall.mesh,roomMode.gridHelper)
-            currentWall.mesh.position.y -= distance;
-        }
-
         watch(bgColorRef,val=>{
             currentWall.matColor = val
             setMatColor(currentWall.mesh,val)
@@ -49,7 +43,7 @@ export default defineComponent({
         })
 
         return {panelShowRef,bgColorRef,widthRef,heightRef,depthRef,
-                handleUpdate,handleStick}
+                handleUpdate}
     }
 })
 </script>
