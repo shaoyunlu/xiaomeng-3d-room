@@ -63,10 +63,11 @@ export default defineComponent({
 
         onMounted(async ()=>{
             let res = await getRoomDetail()
+            roomMode.id = res.id
             roomMode.el = document.getElementById("room_edit")
             roomMode.cabinetFormCompVisibleRef = cabinetFormCompVisibleRef
             roomMode.initScene()
-            roomMode.loadData()
+            //roomMode.loadData()
         })
 
         return {cabinetFormCompVisibleRef,handleAddFloor,handleSave,handleLoad,handleAddWall,handleAddCabinet}

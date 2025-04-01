@@ -4,6 +4,7 @@ import { assignMatchingProperties } from 'util/data'
 
 class Floor{
     constructor(){
+        this.id = ""
         this.width = 50
         this.height = 50
         this.repeatX = 2
@@ -24,6 +25,10 @@ class Floor{
         this.mesh.rotation.x = -Math.PI / 2
         this.mesh.xmObj = this
         scene.add(this.mesh)
+    }
+
+    uploadTexture(){
+        
     }
 
     loadTexture(file,cbf){
@@ -69,6 +74,7 @@ class Floor{
     serialization(){
         let transState = getObjectTransform(this.mesh)
         let res = {
+            id : this.id,
             position : transState.position,
             quaternion : transState.quaternion,
             scale : transState.scale,

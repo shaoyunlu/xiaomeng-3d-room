@@ -10,6 +10,7 @@ import { TransformControls } from 'three/examples/jsm/controls/TransformControls
 
 class Room{
     constructor(){
+        this.id = null
         this.el = null
         this.scene = null
         this.camera = null
@@ -135,6 +136,7 @@ class Room{
 
     createFloor(){
         const floor = new Floor()
+        floor.id = 'floor_' + new Date().getTime()
         floor.init(this.scene)
         return floor
     }
@@ -170,10 +172,11 @@ class Room{
             meshList.push(meshJson)
         })
         let cameraInfo = getOrbitControlsStateAsJson(this.controls)
-        localStorage.roomData = JSON.stringify({
+        let roomData = JSON.stringify({
             camera : cameraInfo,
             meshList : meshList
         })
+        console.log(roomData)
     }
 
     loadData(){
