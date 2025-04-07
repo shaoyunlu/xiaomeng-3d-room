@@ -24,6 +24,8 @@
 <script>
 import {defineComponent, inject ,ref ,watch} from 'vue'
 import {setMatColor} from 'util/biz'
+import {uploadTexture} from 'api/index'
+import {getFileType} from 'util/data'
 export default defineComponent({
     name:"",
     setup(props ,context) {
@@ -41,14 +43,30 @@ export default defineComponent({
 
         const handleUpdate = ()=>{
             roomMode.transformControls.detach()
-            currentFloor.setMaterial(repeatXRef.value,repeatYRef.value,mapRotationRef.value)
+            currentFloor.setMaterialProp(repeatXRef.value,repeatYRef.value,mapRotationRef.value)
         }
 
-        const handleUploadDone = ()=>{
+        /** 上传纹理到服务端 */
+        const handleUploadDone = async ()=>{
             currentTt = fileListRef.value[0]
-            currentFloor.loadTexture(fileListRef.value[0].obj,()=>{
-                fileListRef.value = []
+            let file = fileListRef.value[0].obj
+
+            let fileType = getFileType(file)
+            await uploadTexture(file ,{
+                fileId : currentFloor.id,
+                mroomId : roomMode.id,
+                fileType : fileType
             })
+
+            let fileUrl = global_base_url + roomMode.id + '/' + currentFloor.id + "." + fileType
+
+            currentFloor.loadTextureFromServer(
+                fileUrl + "?date=" + new Date().getTime(),
+                ()=>{
+                    fileListRef.value = []
+                    currentFloor.textureUrl = global_base_url + roomMode.id + '/' + currentFloor.id
+                }
+            )
         }
 
         watch(bgColorRef,val=>{

@@ -12,6 +12,7 @@ class Floor{
         this.mapRotation = 0
         this.matColor = 'rgba(255, 255, 255, 1)'
         this.type = 'floor'
+        this.textureUrl = ''
 
         this.mesh = null
     }
@@ -27,29 +28,46 @@ class Floor{
         scene.add(this.mesh)
     }
 
-    uploadTexture(){
-        
+    loadTextureFromServer(url, cbf) {
+        const self = this
+        fetch(url)
+            .then(response => response.blob())
+            .then(blob => {
+                const objectURL = URL.createObjectURL(blob);
+                const texture = new THREE.TextureLoader().load(objectURL, () => {
+                    texture.wrapS = THREE.RepeatWrapping;
+                    texture.wrapT = THREE.RepeatWrapping;
+                    texture.repeat.set(self.repeatX, self.repeatY);
+    
+                    if (self.mesh) {
+                        self.mesh.material.map = texture;
+                        self.mesh.material.needsUpdate = true;
+                    }
+    
+                    // 释放临时 URL，避免内存泄漏
+                    URL.revokeObjectURL(objectURL);
+    
+                    cbf && cbf();
+                });
+            })
+            .catch(error => console.error("加载纹理失败:", error));
     }
 
     loadTexture(file,cbf){
         const self = this
-        if (typeof str === 'string'){
-
-        }else{
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const texture = new THREE.TextureLoader().load(e.target.result);
-                texture.wrapS = THREE.RepeatWrapping;
-                texture.wrapT = THREE.RepeatWrapping;
-                texture.repeat.set(self.repeatX, self.repeatY)
-                if (self.mesh) {
-                    self.mesh.material.map = texture;
-                    self.mesh.material.needsUpdate = true;
-                }
-                cbf && cbf()
-              };
-              reader.readAsDataURL(file);
-        }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const texture = new THREE.TextureLoader().load(e.target.result);
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            texture.repeat.set(self.repeatX, self.repeatY)
+            if (self.mesh) {
+                self.mesh.material.map = texture;
+                self.mesh.material.needsUpdate = true;
+            }
+            cbf && cbf()
+            };
+            reader.readAsDataURL(file);
     }
 
     setSize(width,height){
@@ -60,7 +78,7 @@ class Floor{
         this.mesh.geometry = newPlaneGeometry;
     }
 
-    setMaterial(repeatX,repeatY,mapRotation){
+    setMaterialProp(repeatX,repeatY,mapRotation){
         this.repeatX = repeatX
         this.repeatY = repeatY
         this.mapRotation = mapRotation
@@ -82,7 +100,8 @@ class Floor{
             repeatY : this.repeatY,
             mapRotation : this.mapRotation,
             matColor : this.matColor,
-            type : this.type
+            type : this.type,
+            textureUrl : this.textureUrl
         }
         return res
     }

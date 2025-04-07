@@ -10,15 +10,14 @@ export const getRoomDetail = async ()=>{
 }
 
 /** 上传纹理 */
-export const uploadTexture = async (roomId,metaData)=>{
+export const uploadTexture = async (file,metaData)=>{
     let formData = new FormData()
     formData.append('file',file)
     formData.append('metadata', 
                     new Blob([JSON.stringify(metaData)],{type:"application/json"}))
-    const res = await http.post("mroom/upload",formData,{
+    await http.post("mroom/upload",formData,{
         headers: {
             "Content-Type": "multipart/form-data",
         }
     })
-    console.log(res)
 }

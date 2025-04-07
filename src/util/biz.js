@@ -69,7 +69,7 @@ export function setMatColor(mesh,rgbaString){
     const b = parseInt(match[3]) / 255;
     const a = match[4] !== undefined ? parseFloat(match[4]) : 1;
 
-    mesh.material = mesh.material.clone();
+    //mesh.material = mesh.material.clone();
     mesh.material.color.setRGB(r, g, b);
     mesh.material.transparent = a < 1
     mesh.material.opacity = a;
