@@ -64,7 +64,7 @@ export default defineComponent({
                 fileUrl + "?date=" + new Date().getTime(),
                 ()=>{
                     fileListRef.value = []
-                    currentFloor.textureUrl = global_base_url + roomMode.id + '/' + currentFloor.id
+                    currentFloor.textureUrl = fileUrl
                 }
             )
         }

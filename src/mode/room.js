@@ -7,10 +7,12 @@ import {getOrbitControlsStateAsJson,applyOrbitControlsStateFromJson,getMeshBotto
 import {isEmpty} from 'util/data'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
+import {updateRoom} from 'api/index'
 
 class Room{
     constructor(){
         this.id = null
+        this.name = null
         this.el = null
         this.scene = null
         this.camera = null
@@ -172,19 +174,20 @@ class Room{
             meshList.push(meshJson)
         })
         let cameraInfo = getOrbitControlsStateAsJson(this.controls)
-        let roomData = JSON.stringify({
+        let roomDataJson = JSON.stringify({
             camera : cameraInfo,
             meshList : meshList
         })
-        console.log(roomData)
+        let paramObj = {
+            id : this.id,
+            name : this.name,
+            mjson : roomDataJson
+        }
+        updateRoom(paramObj)
     }
 
-    loadData(){
+    loadData(roomJson){
         this.resetScene()
-        let roomJson = localStorage.roomData
-        if (!roomJson){
-            return false
-        }
         let roomObj = JSON.parse(roomJson)
         applyOrbitControlsStateFromJson(this.controls ,roomObj.camera)
         console.log(roomObj)

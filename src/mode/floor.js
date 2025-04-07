@@ -109,6 +109,7 @@ class Floor{
     deserialization(config){
         assignMatchingProperties(config ,this)
         setMatColor(this.mesh,config.matColor)
+        this.loadTextureFromServer(config.textureUrl ,null)
         applyObjectTransformState(this.mesh,config)
     }
 }

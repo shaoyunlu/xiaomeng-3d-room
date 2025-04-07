@@ -17,13 +17,14 @@
 <script>
 import {defineComponent, onMounted ,provide,reactive ,ref} from 'vue'
 import RoomMode from 'mode/room'
-import {createEventBus} from 'util/event'
 import floorPanelComp from 'comp/floorPanel.vue'
 import wallPanelComp from 'comp/wallPanel.vue'
 import cabinetPanelComp from 'comp/cabinetPanel.vue'
 import tfcHelperComp from 'comp/tfcHelper.vue'
 import cabinetFormComp from 'comp/cabinetForm.vue'
+import {createEventBus} from 'util/event'
 import {getRoomDetail} from 'api/index'
+import {isEmpty} from 'util/data'
 export default defineComponent({
     name:"",
     components:{floorPanelComp,wallPanelComp,tfcHelperComp,cabinetPanelComp,cabinetFormComp},
@@ -64,10 +65,14 @@ export default defineComponent({
         onMounted(async ()=>{
             let res = await getRoomDetail()
             roomMode.id = res.id
+            roomMode.name = res.name
             roomMode.el = document.getElementById("room_edit")
             roomMode.cabinetFormCompVisibleRef = cabinetFormCompVisibleRef
             roomMode.initScene()
-            //roomMode.loadData()
+            if (!isEmpty(res.mjson)){
+                roomMode.loadData(res.mjson)
+            }
+            
         })
 
         return {cabinetFormCompVisibleRef,handleAddFloor,handleSave,handleLoad,handleAddWall,handleAddCabinet}

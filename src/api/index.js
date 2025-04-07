@@ -21,3 +21,8 @@ export const uploadTexture = async (file,metaData)=>{
         }
     })
 }
+
+/** 更新机房信息 */
+export const updateRoom = async(roomData)=>{
+    await http.post("mroom/update" ,roomData)
+}
