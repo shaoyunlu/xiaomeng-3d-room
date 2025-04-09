@@ -15,11 +15,19 @@ export const uploadTexture = async (file,metaData)=>{
     formData.append('file',file)
     formData.append('metadata', 
                     new Blob([JSON.stringify(metaData)],{type:"application/json"}))
-    await http.post("mroom/upload",formData,{
+    await http.post("mroom/file/upload",formData,{
         headers: {
             "Content-Type": "multipart/form-data",
         }
     })
+}
+
+/** 删除纹理 */
+export const deleteTexture = async (roomId ,fileName)=>{
+    let formData = new FormData()
+    formData.append('roomId' ,roomId)
+    formData.append('fileName' ,fileName)
+    await http.post("mroom/file/delete",formData)
 }
 
 /** 更新机房信息 */

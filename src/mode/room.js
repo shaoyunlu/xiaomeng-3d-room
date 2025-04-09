@@ -166,7 +166,7 @@ class Room{
         }
     }
 
-    saveData(){
+    async saveData(){
         let childList = this.scene.children.filter(tmp => tmp['xmType'] != undefined)
         let meshList = []
         childList.forEach(mesh =>{
@@ -183,7 +183,7 @@ class Room{
             name : this.name,
             mjson : roomDataJson
         }
-        updateRoom(paramObj)
+        await updateRoom(paramObj)
     }
 
     loadData(roomJson){

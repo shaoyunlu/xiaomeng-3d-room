@@ -22,9 +22,10 @@ import wallPanelComp from 'comp/wallPanel.vue'
 import cabinetPanelComp from 'comp/cabinetPanel.vue'
 import tfcHelperComp from 'comp/tfcHelper.vue'
 import cabinetFormComp from 'comp/cabinetForm.vue'
-import {createEventBus} from 'util/event'
 import {getRoomDetail} from 'api/index'
+import {createEventBus} from 'util/event'
 import {isEmpty} from 'util/data'
+import {messageDialog} from 'util/dom'
 export default defineComponent({
     name:"",
     components:{floorPanelComp,wallPanelComp,tfcHelperComp,cabinetPanelComp,cabinetFormComp},
@@ -58,8 +59,9 @@ export default defineComponent({
             roomMode.loadData()
         }
 
-        const handleSave = ()=>{
-            roomMode.saveData()
+        const handleSave = async ()=>{
+            await roomMode.saveData()
+            messageDialog()
         }
 
         onMounted(async ()=>{

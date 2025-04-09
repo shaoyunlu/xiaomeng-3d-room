@@ -18,13 +18,14 @@
                 </div>
             </template>
         </xmv-upload>
+        <xmv-button type="danger" @click="handleDelete">删除</xmv-button>
     </div>
 </template>
 
 <script>
 import {defineComponent, inject ,ref ,watch} from 'vue'
-import {setMatColor} from 'util/biz'
-import {uploadTexture} from 'api/index'
+import {uploadTexture,deleteTexture} from 'api/index'
+import {setMatColor,removeMesh} from 'util/biz'
 import {getFileType} from 'util/data'
 export default defineComponent({
     name:"",
@@ -44,6 +45,10 @@ export default defineComponent({
         const handleUpdate = ()=>{
             roomMode.transformControls.detach()
             currentFloor.setMaterialProp(repeatXRef.value,repeatYRef.value,mapRotationRef.value)
+        }
+
+        const handleDelete = async ()=>{
+            removeMesh(roomMode.scene,currentFloor.mesh)
         }
 
         /** 上传纹理到服务端 */
@@ -88,7 +93,7 @@ export default defineComponent({
         return {panelShowRef,fileListRef,
                 repeatXRef,repeatYRef,mapRotationRef,
                 bgColorRef,
-                handleUpdate,handleUploadDone}
+                handleUpdate,handleUploadDone,handleDelete}
     }
 })
 </script>
