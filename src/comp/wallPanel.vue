@@ -4,6 +4,10 @@
         <br>
         <xmv-color-picker v-model="bgColorRef" show-alpha/>
         <br>
+        <xmv-select v-model="sideSelect">
+            <xmv-option v-for="tmp in sideOption" :key="tmp.value" 
+            :label="tmp.label" :value="tmp.value"></xmv-option>
+        </xmv-select>
         <div>
             <xmv-button @click="handleUpdate">确认修改</xmv-button>
         </div>
@@ -25,13 +29,34 @@ export default defineComponent({
         var currentWall = null
         const bgColorRef = ref('rgba(0, 0, 0, 1)')
 
+        const sideSelect = ref("6")
+
+        const sideOption = [
+                                {value: '6',label: '全部'},
+                                {value: '0',label: '右面'},
+                                {value: '1',label: '左面'},
+                                {value: '2',label: '上面'},
+                                {value: '3',label: '下面'},
+                                {value: '4',label: '前面'},
+                                {value: '5',label: '后面'},
+                            ]
+
         const handleUpdate = ()=>{
             
         }
 
         watch(bgColorRef,val=>{
             currentWall.matColor = val
-            setMatColor(currentWall.mesh,val)
+            if (sideSelect.value != 6){
+                setMatColor(currentWall.mesh,val,sideSelect.value)
+            }else{
+                setMatColor(currentWall.mesh,val,0)
+                setMatColor(currentWall.mesh,val,1)
+                setMatColor(currentWall.mesh,val,2)
+                setMatColor(currentWall.mesh,val,3)
+                setMatColor(currentWall.mesh,val,4)
+                setMatColor(currentWall.mesh,val,5)
+            }
         })
 
         roomMode.$on('MeshClick' ,(mesh)=>{
@@ -43,6 +68,7 @@ export default defineComponent({
         })
 
         return {panelShowRef,bgColorRef,widthRef,heightRef,depthRef,
+                sideSelect,sideOption,
                 handleUpdate}
     }
 })

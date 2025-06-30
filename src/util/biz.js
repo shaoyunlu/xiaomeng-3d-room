@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import {isEmpty} from 'util/data'
 
 export function removeMesh(scene ,meshToRemove){
     scene.remove(meshToRemove);
@@ -62,7 +63,7 @@ export function getObjectTransformState(obj) {
     };
 }
 
-export function setMatColor(mesh,rgbaString){
+export function setMatColor(mesh,rgbaString,idx){
     const match = rgbaString.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,?\s*([\d.]*)?\s*\)/);
     const r = parseInt(match[1]) / 255;
     const g = parseInt(match[2]) / 255;
@@ -70,10 +71,18 @@ export function setMatColor(mesh,rgbaString){
     const a = match[4] !== undefined ? parseFloat(match[4]) : 1;
 
     //mesh.material = mesh.material.clone();
-    mesh.material.color.setRGB(r, g, b);
-    mesh.material.transparent = a < 1
-    mesh.material.opacity = a;
-    mesh.material.needsUpdate = true
+    if (!isEmpty(idx)){
+        mesh.material[idx].color.setRGB(r, g, b);
+        mesh.material[idx].transparent = a < 1
+        mesh.material[idx].opacity = a;
+        mesh.material[idx].needsUpdate = true
+    }else{
+        mesh.material.color.setRGB(r, g, b);
+        mesh.material.transparent = a < 1
+        mesh.material.opacity = a;
+        mesh.material.needsUpdate = true
+    }
+    
 }
 
 export function getOrbitControlsStateAsJson(controls) {
